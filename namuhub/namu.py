@@ -33,6 +33,10 @@ class NamuContrib(object):
         else:
             self._when = datetime.strptime(when, DATE_FORMAT)
 
+    def __repr__(self):
+        return '<NamuContrib doc=%s rev=%s changes=%s when=%s desc=%s>' % (
+            self.document, self.revision, self.changes, self.when, self.desc)
+
 def contrib(username):
     """contributions"""
     result = []
@@ -46,7 +50,6 @@ def contrib(username):
     item = None
     hasdetail = False
     for i, row in enumerate(rows):
-        print(i, item, hasdetail)
         if not item and not hasdetail:
             info = row.select('td')[0]
             document = info.select('a')[0].string
