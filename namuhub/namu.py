@@ -75,7 +75,3 @@ def contrib(username):
             item = None
 
     return result
-
-if __name__ == '__main__':
-    contrib('ssut')
-
