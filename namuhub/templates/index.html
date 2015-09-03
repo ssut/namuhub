@@ -18,6 +18,9 @@
     <div class="ui divider"></div>
 
     <div id="container" class="ui">
+        <h3>Duh,</h3>
+        <p>이 메시지가 보인다면 페이지가 제대로 로드되지 않았을 가능성이 높습니다.</p>
+        <p>페이지를 새로고침(F5) 하거나 최신 버전의 웹 브라우저를 사용하고 있는지 확인해주세요.</p>
     </div>
 </div>
 
@@ -36,13 +39,13 @@
 
         render: function() {
             return (
-                <div>
-                <div className="ui center aligned header">
-                    <SearchBox onSubmit={this.load} user={this.props.user} />
-                </div>
-                <div className="ui center aligned">
-                    <ContribBox />
-                </div>
+                <div className="ui">
+                    <div className="ui center aligned header">
+                        <SearchBox onSubmit={this.load} user={this.props.user} />
+                    </div>
+                    <div className="ui center aligned">
+                        <ContribBox />
+                    </div>
                 </div>
             );
         }
