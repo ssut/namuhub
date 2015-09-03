@@ -12,12 +12,18 @@ var SearchBox = React.createClass({
         };
     },
 
+    handleSubmit: function() {
+
+    },
+
     submit: function(e) {
         var uri = '/' + this.state.user;
         e.preventDefault();
 
-        var ps = window.history.pushState | 1 || 0;
+        var ps = window.history.pushState ? 1 : 0;
         [function(){location.replace(uri)},function(){window.history.pushState(null,null,uri)}][ps]();
+
+        this.handleSubmit();
     },
 
     updateUser: function(e) {
