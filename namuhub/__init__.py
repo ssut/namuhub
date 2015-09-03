@@ -6,3 +6,9 @@ app = Flask('namuhub')
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+
+@app.route('/<user>', methods=['GET'])
+def index_user(user=''):
+    return render_template('index.html', **{'user': user})
+
+
