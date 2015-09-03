@@ -1,19 +1,18 @@
 var ContribBox = React.createClass({
+    handleLoad: function(user) {
+        alert(user);
+    },
+
     render: function() {
-        return <div />;
+        return <div>asdf</div>;
     }
 });
 
 var SearchBox = React.createClass({
-    getInitialState: function () {
-        console.log(this.props);
+    getInitialState: function() {
         return {
-            user: this.props.user || ''
+            user: this.props.user || ''  
         };
-    },
-
-    handleSubmit: function() {
-
     },
 
     submit: function(e) {
@@ -23,13 +22,17 @@ var SearchBox = React.createClass({
         var ps = window.history.pushState ? 1 : 0;
         [function(){location.replace(uri)},function(){window.history.pushState(null,null,uri)}][ps]();
 
-        this.handleSubmit();
+        this.props.onSubmit(this.state.user);
     },
 
     updateUser: function(e) {
         this.setState({
             user: e.target.value
         });
+    },
+
+    componentDidMount: function() {
+        this.props.onSubmit(this.state.user);
     },
 
     render: function() {
