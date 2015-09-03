@@ -2,9 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>나무허브 - NamuHub</title>
+
+    <link rel="stylesheet" href="/static/semantic.min.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    
+<div class="ui container">
+    <h1 class="ui center aligned header">나무허브 (namuhub)</h1>
+    <h2 class="ui center aligned header">나무위키 아이디 또는 아이피를 입력해 나무위키에 얼마나 기여했는지 확인해보세요.</h2>
+
+    <div class="ui divider"></div>
+
+    <div id="container" class="ui">
+    </div>
+</div>
+
+<script src="/static/jquery.min.js"></script>
+<script src="/static/semantic.min.js"></script>
+<script src="/static/react.min.js"></script>
+<script src="/static/JSXTransformer.js"></script>
+<script src="/static/namuhub.js" type="text/jsx"></script>
+<script type="text/jsx">
+    var App = React.createClass({
+        displayName: 'namuhub',
+
+        load: function(user) {
+            alert(user);
+        },
+
+        render: function() {
+            return (
+                <div>
+                <div className="ui center aligned header">
+                    <SearchBox onSubmit={this.load} user={this.props.user} />
+                </div>
+                <div className="ui center aligned">
+                    <ContribBox />
+                </div>
+                </div>
+            );
+        }
+    });
+
+    React.render(
+        <App user="{{ user }}" />,
+        document.getElementById("container")
+    )
+</script>
 </body>
 </html>
