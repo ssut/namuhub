@@ -33,9 +33,29 @@ class NamuContrib(object):
         else:
             self._when = datetime.strptime(when, DATE_FORMAT) - timedelta(hours=9)
 
+    def as_dict(self):
+        obj = {
+            'document': self.document,
+            'revision': self.revision,
+            'changes': self.changes,
+            'when': self.when,
+            'desc': self.desc,
+            'revert': self.revert,
+        }
+        return obj
+
     def __repr__(self):
         return '<NamuContrib doc=%s rev=%s changes=%s when=%s desc=%s>' % (
             self.document, self.revision, self.changes, self.when, self.desc)
+
+def extint(input):
+    """Extract numbers from a string"""
+    num = None
+    try:
+        num = int(''.join([s for s in input if s.isdigit()]))
+    except ValueError:
+        pass
+    return num
 
 def contrib(username):
     """contributions"""
@@ -63,6 +83,12 @@ def contrib(username):
             changes = int(info.select('span')[-1].string)
             when = row.select('td')[2].string.strip()
             item = NamuContrib(document=document, revision=revision, changes=changes, when=when)
+
+            # Find reverts
+            revert = info.select('a + i')
+            if revert:
+                revert = extint(revert[0].string)
+                item.revert = revert
         elif item and hasdetail:
             desc = row.select('td')[0].string
             item.desc = desc
