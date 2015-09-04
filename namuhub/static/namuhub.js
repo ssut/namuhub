@@ -1,10 +1,15 @@
 var ContribBox = React.createClass({
-    handleLoad: function(user) {
-        alert(user);
+    getInitialState: function() {
+        return {
+            loaded: false
+        };
     },
 
     componentWillReceiveProps: function(props) {
         if(props.data !== null && props.data !== this.props.data) {
+            var self = this;
+            this.setState({loaded: false});
+
             window.cal = new CalHeatMap();
             $('#cal').html('');
             var startDate = new Date();
@@ -14,6 +19,7 @@ var ContribBox = React.createClass({
                 date = +new Date(date) / 1000 | 0;
                 data[date] = items.length;
             });
+
             window.cal.init({
                 itemSelector: '#cal',
                 domain: 'month',
@@ -25,7 +31,8 @@ var ContribBox = React.createClass({
                 legendHorizontalPosition: 'left',
                 onComplete: function() {
                     setTimeout(function() {
-                        $('#cal').css('width', $('#cal > svg').width());
+                        $('#contrib, #cal').css('width', $('#cal > svg').width());
+                        self.setState({loaded: true});
                     }, 0);
                 },
             });
@@ -33,7 +40,18 @@ var ContribBox = React.createClass({
     },
 
     render: function() {
-        return <div id="cal"></div>;
+        var contribClassString = 'ui center';
+        if(!this.state.loaded) {
+            contribClassString += ' hide';
+        }
+
+        return (
+            <div id="contrib" className={contribClassString}>
+                <div id="cal"></div>
+                <div className="ui divider"></div>
+                asdf
+            </div>
+        );
     }
 });
 
