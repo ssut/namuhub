@@ -70,11 +70,11 @@ body > .ui.container {
 }
 
 #details ul li .state-more {
-    background-color: #6cc644;
+    background-color: #21ba45;
 }
 
 #details ul li .state-less {
-    background-color: #bd2c00;
+    background-color: #fbbd08;
 }
 
 #details ul li .num {
