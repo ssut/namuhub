@@ -1,12 +1,12 @@
 # coding: utf-8
 """namu.wiki contrib grabber"""
-from datetime import datetime
+from datetime import datetime, timedelta
 import urllib.parse
 
 from bs4 import BeautifulSoup
 import requests
 
-__all__ = ['contrib']
+__all__ = 'contrib', 
 
 URL = 'https://namu.wiki/contribution/author/{author}/document'
 DATE_FORMAT = r'%Y-%m-%d %H:%M:%S'
@@ -31,7 +31,7 @@ class NamuContrib(object):
         if isinstance(when, datetime):
             self._when = when
         else:
-            self._when = datetime.strptime(when, DATE_FORMAT)
+            self._when = datetime.strptime(when, DATE_FORMAT) - timedelta(hours=9)
 
     def __repr__(self):
         return '<NamuContrib doc=%s rev=%s changes=%s when=%s desc=%s>' % (
