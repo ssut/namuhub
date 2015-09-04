@@ -9,13 +9,20 @@ from namuhub import namu as namuwiki
 
 app = Flask('namuhub')
 
+def context(append={}):
+    ctx = {
+        'debug': app.config['DEBUG'],
+    }
+    ctx.update(append)
+    return ctx
+
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return render_template('index.html', **context())
 
 @app.route('/<user>', methods=['GET'])
 def index_user(user=''):
-    return render_template('index.html', **{'user': user})
+    return render_template('index.html', **context({'user': user}))
 
 @app.route('/', methods=['POST'])
 def namu():
