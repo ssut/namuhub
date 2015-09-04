@@ -1,7 +1,39 @@
 var ContribBoxItem = React.createClass({
     render: function() {
+        var stateString = this.props.data.changes.toString(),
+            stateClassString = 'state';
+        if(this.props.data.changes > 0) {
+            stateString = '+' + stateString;
+            stateClassString += ' state-more';
+        } else if(this.props.data.changes == 0) {
+            stateClassString += ' state-keep';
+        } else {
+            stateClassString += ' state-less';
+        }
+
+        var revertString = '';
+        if(this.props.data.revert) {
+            revertString = ' (refs #' + this.props.data.revert.toString() + ')';
+        }
+
+        var hrefString = 'https://namu.wiki/wiki/' + encodeURIComponent(this.props.data.document);
+        var diffString = 'https://namu.wiki/diff/' + encodeURIComponent(this.props.data.document) + '?rev=' + this.props.data.revision.toString() + 
+                         '&oldrev=' + (this.props.data.revision - 1).toString();
+
+        var timeObject = moment(this.props.data.when);
+        var timeString = timeObject.format('YYYY-MM-DD h:mm:ss a');
+        var timeShortenString = timeObject.fromNow();
+
         return (
-            <li />
+            <li>
+                <a href={diffString} target="_blank"><span className={stateClassString}>{stateString}</span></a>
+                <span className="num">#{this.props.data.revision}{revertString}</span>
+                <a href={hrefString} target="_blank" className="link">{this.props.data.document}</a>
+                <time title={timeString}>{timeShortenString}</time>
+                <span className="cmeta">
+                    {this.props.data.desc ? this.props.data.desc : '-'}
+                </span>
+            </li>
         );
     }
 });
