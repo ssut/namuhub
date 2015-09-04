@@ -1,5 +1,11 @@
 """namuhub --- namu.wiki contribution graph"""
+import time
+from collections import defaultdict
+from datetime import timedelta
+
 from flask import Flask, jsonify, render_template, request, url_for
+
+from namuhub import namu as namuwiki
 
 app = Flask('namuhub')
 
@@ -13,7 +19,27 @@ def index_user(user=''):
 
 @app.route('/', methods=['POST'])
 def namu():
-    user = request.POST.get('user', None)
+    user = request.form.get('user', None)
     if not user:
-        return '', 501
+        return jsonify({}), 501
+
+    contribs = namuwiki.contrib(user)
+    data = defaultdict(lambda: [])
+    # First, separate contributions into list by their activity date
+    for contrib in contribs:
+        date = (contrib.when - timedelta(hours=9)).date().strftime('%Y-%m-%d')
+        data[date].append(contrib)
+    # Convert defaultdict to dict
+    # However, this may be inefficient but I don't care about performance at this point because it doesn't matter while it's a small project
+    data = dict(data)
+    # Next, we should serialize it as dict object to make sure that all the values are JSON serialiable
+    for key, value in data.items():
+        value = [c.as_dict() for c in value]
+        # Almost done, fix timezone and convert its date property to unix timestamp number that can be parsed by javascript's date object
+        for i, c in enumerate(value):
+            value[i]['when'] = int(time.mktime((c['when'] + timedelta(hours=9)).timetuple())) * 1000
+        # Overwrite existing value
+        data[key] = value
+
+    return jsonify(data)
 
