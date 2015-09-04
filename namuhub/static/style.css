@@ -41,6 +41,61 @@ body > .ui.container {
     font-size: 1.2em;
 }
 
+#details ul {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #999;
+    padding: 0;
+    word-wrap: break-word;
+}
+
+#details ul li {
+    padding: 11px 0 8px;
+    padding-left: 90px;
+    list-style-type: none;
+}
+
+#details ul li .state {
+    float: left;
+    width: 80px;
+    margin: 3px 3px 2px -90px;
+    display: inline-block;
+    padding: 4px 8px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    background-color: #999;
+}
+
+#details ul li .state-more {
+    background-color: #6cc644;
+}
+
+#details ul li .state-less {
+    background-color: #bd2c00;
+}
+
+#details ul li .num {
+    color: #999;
+    display: inline-block;
+    min-width: 25px;
+}
+
+#details ul li a.link {
+    color: #4078c0;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0 8px 0 5px;
+}
+
+#details ul li .cmeta {
+    display: block;
+    font-size: 12px;
+    color: #767676;
+}
+
 #contrib div.summary > div > span:last-child {
     display: block;
     line-height: 1.6em;
