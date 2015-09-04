@@ -44,8 +44,13 @@
 <script src="/static/notify.min.js"></script>
 <script src="/static/semantic.min.js"></script>
 <script src="/static/react.min.js"></script>
+{% if debug %}
 <script src="/static/JSXTransformer.js"></script>
 <script src="/static/jsx/namuhub.js" type="text/jsx"></script>
 <script src="/static/jsx/main.js" type="text/jsx"></script>
+{% else %}
+<script src="/static/js/namuhub.js"></script>
+<script src="/static/js/main.js"></script>
+{% endif %}
 </body>
 </html>
