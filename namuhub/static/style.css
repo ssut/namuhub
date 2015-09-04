@@ -1,9 +1,13 @@
 @charset "utf-8";
 
 body > .ui.container {
-  margin-top: 3em;
+    margin-top: 3em;
 }
 
-div.contrib {
-    
+#cal {
+    margin: 3em auto 0 auto;
+}
+
+#cal .cal-heatmap-container {
+    margin: 0 auto;
 }
