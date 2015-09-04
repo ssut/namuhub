@@ -27,7 +27,7 @@ def namu():
     data = defaultdict(lambda: [])
     # First, separate contributions into list by their activity date
     for contrib in contribs:
-        date = (contrib.when - timedelta(hours=9)).date().strftime('%Y-%m-%d')
+        date = (contrib.when + timedelta(hours=9)).date().strftime('%Y-%m-%d')
         data[date].append(contrib)
     # Convert defaultdict to dict
     # However, this may be inefficient but I don't care about performance at this point because it doesn't matter while it's a small project
@@ -37,7 +37,7 @@ def namu():
         value = [c.as_dict() for c in value]
         # Almost done, fix timezone and convert its date property to unix timestamp number that can be parsed by javascript's date object
         for i, c in enumerate(value):
-            value[i]['when'] = int(time.mktime((c['when'] + timedelta(hours=9)).timetuple())) * 1000
+            value[i]['when'] = int(time.mktime((c['when'] + timedelta(hours=9)).utctimetuple())) * 1000
         # Overwrite existing value
         data[key] = value
 
