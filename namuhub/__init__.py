@@ -11,4 +11,9 @@ def index():
 def index_user(user=''):
     return render_template('index.html', **{'user': user})
 
+@app.route('/', methods=['POST'])
+def namu():
+    user = request.POST.get('user', None)
+    if not user:
+        return '', 501
 
