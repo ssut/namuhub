@@ -1,3 +1,11 @@
+var ContribBoxItem = React.createClass({
+    render: function() {
+        return (
+            <li />
+        );
+    }
+});
+
 var ContribBox = React.createClass({
     getInitialState: function() {
         return {
@@ -7,6 +15,8 @@ var ContribBox = React.createClass({
             monthContribs: 0,
             longestStreak: 0,
             currentStreak: 0,
+            detailsDate: '날짜를 선택하세요',
+            details: [],
         };
     },
 
@@ -123,7 +133,11 @@ var ContribBox = React.createClass({
     },
 
     onClickDate: function(date) {
-        console.log(date);
+        var items = this.props.data[date] || [];
+        this.setState({
+            detailsDate: date,
+            details: items,
+        });
     },
 
     render: function() {
@@ -136,12 +150,21 @@ var ContribBox = React.createClass({
             <div id="contrib" className={contribClassString}>
                 <div id="cal"></div>
                 <div className="ui divider"></div>
-                <div className="summary">
+                <div className="summary clearfix">
                     <div>총 기여 <span>{this.state.totalContribs}</span></div>
                     <div>올해 기여 <span>{this.state.yearContribs}</span></div>
                     <div>이번달 기여 <span>{this.state.monthContribs}</span></div>
                     <div>최장 연속기여 (일) <span>{this.state.longestStreak}</span></div>
                     <div>현재 연속기여 (일) <span>{this.state.currentStreak}</span></div>
+                </div>
+                <div className="ui divider"></div>
+                <div id="details">
+                    <div className="title"><strong>{this.state.details.length}</strong>번의 기여 - {this.state.detailsDate}</div>
+                    <ul>
+                        {this.state.details.map(function(detail) {
+                            return <ContribBoxItem data={detail} />;
+                        })}
+                    </ul>
                 </div>
             </div>
         );
