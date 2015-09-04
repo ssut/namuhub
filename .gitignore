@@ -61,3 +61,6 @@ target/
 
 # PyEnv
 .python-version
+
+# Project
+namuhub/static/js/**/*
