@@ -8,6 +8,7 @@
     <title>나무허브 - NamuHub</title>
 
     <link rel="stylesheet" href="/static/semantic.min.css">
+    <link rel="stylesheet" href="/static/cal-heatmap.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -22,29 +23,65 @@
         <p>이 메시지가 보인다면 페이지가 제대로 로드되지 않았을 가능성이 높습니다.</p>
         <p>페이지를 새로고침(F5) 하거나 최신 버전의 웹 브라우저를 사용하고 있는지 확인해주세요.</p>
     </div>
+
+    <div id="cal-heatmap"></div>
 </div>
 
+<script src="/static/d3.min.js"></script>
+<script src="/static/cal-heatmap.js"></script>
 <script src="/static/jquery.min.js"></script>
+<script src="/static/notify.min.js"></script>
 <script src="/static/semantic.min.js"></script>
 <script src="/static/react.min.js"></script>
 <script src="/static/JSXTransformer.js"></script>
 <script src="/static/namuhub.js" type="text/jsx"></script>
 <script type="text/jsx">
+    window.alert = function(text) {
+        $.notify(text, 'warn');
+    };
+    window.cal = new CalHeatMap();
+
     var App = React.createClass({
         displayName: 'namuhub',
 
+        getInitialState: function() {
+            return {
+                data: null,
+                loading: false
+            };
+        },
+
         load: function(user) {
-            alert(user);
+            var self = this;
+            this.setState({loading: true});
+
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: {
+                    user: user
+                },
+                cache: false,
+                success: function(data) {
+                    if($.isEmptyObject(data)) {
+                        self.setState({loading: false});
+                        $.notify('데이터를 불러오지 못했습니다.\n기여내역이 없는 경우에도 이 메시지가 표시됩니다.', 'error');
+                        return;
+                    }
+
+                    self.setState({loading: false, data: data});
+                }
+            });
         },
 
         render: function() {
             return (
                 <div className="ui">
                     <div className="ui center aligned header">
-                        <SearchBox onSubmit={this.load} user={this.props.user} />
+                        <SearchBox onSubmit={this.load} loading={this.state.loading} user={this.props.user} />
                     </div>
                     <div className="ui center aligned">
-                        <ContribBox />
+                        <ContribBox data={this.state.data} asdf="2" />
                     </div>
                 </div>
             );
