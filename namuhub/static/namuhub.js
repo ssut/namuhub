@@ -39,12 +39,12 @@ var ContribBox = React.createClass({
             });
 
             // calculate streaks
+            // ye I know, too dirty code
             var _lastDay = null, _nextDay = null;
             var _longest = 0, _longestTemp = 0;
             $(merged).each(function(_, obj) {
                 var date = moment(obj.when);
                 if(date.isSame(_lastDay, 'day')) return;
-                console.log(date.format('YYYYMMDD'), _lastDay);
 
                 if(date.isSame(_nextDay, 'day')) {
                     _longestTemp++;
@@ -58,8 +58,33 @@ var ContribBox = React.createClass({
                 _lastDay = date;
                 _nextDay = moment(date).add(1, 'd');
             });
+            var _lastDay = null, _yesterDay = null;
+            var _current = 0, _break = false;
+            $(merged.reverse()).each(function(_, obj) {
+                if(_break) return;
+                var date = moment(obj.when);
+                if(_current == 0 && !date.isSame(moment(), 'day')) {
+                    _break = true;
+                    return;
+                } else {
+                    _current = 1;
+                }
+                if(date.isSame(_lastDay, 'day')) return;
+
+                if(date.isSame(_yesterDay, 'day')) {
+                    _current++;
+                } else {
+                    _break = true;
+                    return;
+                }
+
+                _lastDay = date;
+                _yesterDay = moment(date).add(-1, 'd');
+            });
+
             this.setState({
                 longestStreak: _longest,
+                currentStreak: _current,
             });
 
             // clear existing calendar
@@ -79,7 +104,7 @@ var ContribBox = React.createClass({
                 itemSelector: '#cal',
                 domain: 'month',
                 subDomain: 'day',
-                range: 12,
+                range: 13,
                 start: startDate,
                 data: data,
                 tooltip: true,
