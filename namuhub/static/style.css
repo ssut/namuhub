@@ -113,3 +113,13 @@ body > .ui.container {
     font-size: 2em;
     color: #000;
 }
+
+#bottom {
+    margin: 0.1em 0 0.2em 0;
+    text-align: center;
+    color: #888;
+}
+
+#bottom p {
+    line-height: 0.6285em;
+}
