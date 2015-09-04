@@ -9,7 +9,8 @@ var App = React.createClass({
     getInitialState: function() {
         return {
             data: null,
-            loading: false
+            loading: false,
+            user: window.user || '',
         };
     },
 
@@ -40,7 +41,7 @@ var App = React.createClass({
         return (
             <div className="ui">
                 <div className="ui center aligned header">
-                    <SearchBox onSubmit={this.load} loading={this.state.loading} user={this.props.user} />
+                    <SearchBox onSubmit={this.load} loading={this.state.loading} user={this.state.user} />
                 </div>
                 <div className="ui center aligned">
                     <ContribBox data={this.state.data} />
@@ -51,6 +52,6 @@ var App = React.createClass({
 });
 
 React.render(
-    <App user="{{ user }}" />,
+    <App />,
     document.getElementById("container")
 );
