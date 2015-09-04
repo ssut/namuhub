@@ -1,26 +1,51 @@
 var ContribBox = React.createClass({
     getInitialState: function() {
         return {
-            loaded: false
+            loaded: false,
+            totalContribs: 0,
+            yearContribs: 0,
+            monthContribs: 0,
         };
     },
 
     componentWillReceiveProps: function(props) {
         if(props.data !== null && props.data !== this.props.data) {
+            // set state
             var self = this;
             this.setState({loaded: false});
 
-            window.cal = new CalHeatMap();
-            $('#cal').html('');
-            var startDate = new Date();
+            // start date (365 days ago)
+            // first day of month
+            var startDate = new Date(), firstDay = new Date();
             startDate.setDate(startDate.getDate() - 365);
+            firstDay.setDate(1);
+
+            // group items to calculate statistics
+            var merged = $.map(props.data, function(obj) {return obj});
+            // calculate and apply
+            this.setState({
+                totalContribs: merged.length,
+                yearContribs: $(merged).filter(function(_, obj) {
+                    return obj.when > +startDate;
+                }).length,
+                monthContribs: $(merged).filter(function(_, obj) {
+                    return obj.when > +firstDay;
+                }).length,
+            });
+
+            // clear existing calendar
+            cal = new CalHeatMap();
+            $('#cal').html('');
+
+            // re-arrange data
             var data = {};
-            window.$.each(props.data, function(date, items) {
+            $.each(props.data, function(date, items) {
                 date = +new Date(date) / 1000 | 0;
                 data[date] = items.length;
             });
 
-            window.cal.init({
+            // draw calendar
+            cal.init({
                 itemSelector: '#cal',
                 domain: 'month',
                 subDomain: 'day',
@@ -49,7 +74,9 @@ var ContribBox = React.createClass({
             <div id="contrib" className={contribClassString}>
                 <div id="cal"></div>
                 <div className="ui divider"></div>
-                asdf
+                총 기여 <span>{this.state.totalContribs}</span>
+                올해 기여 <span>{this.state.yearContribs}</span>
+                이번달 기여 <span>{this.state.monthContribs}</span>
             </div>
         );
     }
@@ -71,8 +98,8 @@ var SearchBox = React.createClass({
             return;
         }
 
-        var ps = window.history.pushState ? 1 : 0;
-        [function(){location.replace(uri)},function(){window.history.pushState(null,null,uri)}][ps]();
+        var ps = history.pushState ? 1 : 0;
+        [function(){location.replace(uri)},function(){history.pushState(null,null,uri)}][ps]();
 
         this.props.onSubmit(this.state.user);
     },
