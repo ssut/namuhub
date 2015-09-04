@@ -154,7 +154,7 @@ var ContribBox = React.createClass({
                     setTimeout(function() {
                         $('#contrib, #cal').css('width', $('#cal > svg').width());
                         self.setState({loaded: true});
-                    }, 0);
+                    }, 15);
                 },
                 onClick: function(date, _) {
                     self.onClickDate(moment(date).format('YYYY-MM-DD'));
