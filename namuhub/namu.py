@@ -1,7 +1,8 @@
 # coding: utf-8
 """namu.wiki contrib grabber"""
-from datetime import datetime, timedelta
+import re
 import urllib.parse
+from datetime import datetime, timedelta
 
 from bs4 import BeautifulSoup
 import requests
@@ -9,7 +10,9 @@ import requests
 __all__ = 'contrib', 
 
 URL = 'https://namu.wiki/contribution/author/{author}/document'
+URL_IP = 'https://namu.wiki/contribution/ip/{author}/document'
 DATE_FORMAT = r'%Y-%m-%d %H:%M:%S'
+RE_IP = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$')
 
 class NamuContrib(object):
     """contribution object"""
@@ -62,6 +65,9 @@ def contrib(username):
     result = []
 
     url = URL.format(author=username)
+    if '.' in username and RE_IP.match(username):
+        url = URL_IP.format(author=username)
+
     req = requests.get(url)
     soup = BeautifulSoup(req.text, 'lxml')
     soup.encoding = 'utf-8'
