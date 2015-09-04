@@ -4,10 +4,18 @@ body > .ui.container {
     margin-top: 3em;
 }
 
+#contrib {
+    margin: 0 auto;
+}
+
 #cal {
     margin: 3em auto 0 auto;
 }
 
 #cal .cal-heatmap-container {
     margin: 0 auto;
+}
+
+.hide {
+    display: none;
 }
