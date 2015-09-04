@@ -21,6 +21,7 @@ var App = React.createClass({
         $.ajax({
             url: '/',
             type: 'POST',
+            timeout: 15000,
             data: {
                 user: user
             },
@@ -33,7 +34,14 @@ var App = React.createClass({
                 }
 
                 self.setState({loading: false, data: data});
-            }
+            },
+            error: function(xhr, reason, message) {
+                if(reason == 'timeout') {
+                    self.setState({loading: false});
+                    $.notify('서버가 바쁘다네요. 잠시 후 다시 시도해주세요.\n아니면 오류가 났을지도..', 'error');
+                    return;
+                }
+            },
         });
     },
 
