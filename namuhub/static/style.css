@@ -4,6 +4,10 @@ body > .ui.container {
     margin-top: 3em;
 }
 
+.hide {
+    display: none;
+}
+
 #contrib {
     margin: 0 auto;
 }
@@ -16,6 +20,17 @@ body > .ui.container {
     margin: 0 auto;
 }
 
-.hide {
-    display: none;
+#contrib div.summary > div {
+    float: left;
+    width: 19.99999999%;
+    text-align: center;
+    color: #767676;
+    font-size: 0.9em;
+}
+
+#contrib div.summary > div > span:last-child {
+    display: block;
+    line-height: 1.6em;
+    font-size: 2em;
+    color: #000;
 }

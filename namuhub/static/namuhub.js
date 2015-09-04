@@ -5,6 +5,8 @@ var ContribBox = React.createClass({
             totalContribs: 0,
             yearContribs: 0,
             monthContribs: 0,
+            longestStreak: 0,
+            currentStreak: 0,
         };
     },
 
@@ -21,7 +23,10 @@ var ContribBox = React.createClass({
             firstDay.setDate(1);
 
             // group items to calculate statistics
-            var merged = $.map(props.data, function(obj) {return obj});
+            var merged = $.map(props.data, function(obj) {return obj}).sort(function(a, b) {
+                return a.when > b.when ? 1 : -1;
+            });
+
             // calculate and apply
             this.setState({
                 totalContribs: merged.length,
@@ -33,12 +38,37 @@ var ContribBox = React.createClass({
                 }).length,
             });
 
+            // calculate streaks
+            var _lastDay = null, _nextDay = null;
+            var _longest = 0, _longestTemp = 0;
+            $(merged).each(function(_, obj) {
+                var date = moment(obj.when);
+                if(date.isSame(_lastDay, 'day')) return;
+                console.log(date.format('YYYYMMDD'), _lastDay);
+
+                if(date.isSame(_nextDay, 'day')) {
+                    _longestTemp++;
+                    if(_longestTemp > _longest) {
+                        _longest = _longestTemp;
+                    }
+                } else {
+                    _longestTemp = 1;
+                }
+
+                _lastDay = date;
+                _nextDay = moment(date).add(1, 'd');
+            });
+            this.setState({
+                longestStreak: _longest,
+            });
+
             // clear existing calendar
             cal = new CalHeatMap();
             $('#cal').html('');
 
             // re-arrange data
             var data = {};
+            console.log(props.data)
             $.each(props.data, function(date, items) {
                 date = +new Date(date) / 1000 | 0;
                 data[date] = items.length;
@@ -60,8 +90,15 @@ var ContribBox = React.createClass({
                         self.setState({loaded: true});
                     }, 0);
                 },
+                onClick: function(date, _) {
+                    self.onClickDate(moment(date).format('YYYY-MM-DD'));
+                },
             });
         }
+    },
+
+    onClickDate: function(date) {
+        console.log(date);
     },
 
     render: function() {
@@ -74,9 +111,13 @@ var ContribBox = React.createClass({
             <div id="contrib" className={contribClassString}>
                 <div id="cal"></div>
                 <div className="ui divider"></div>
-                총 기여 <span>{this.state.totalContribs}</span>
-                올해 기여 <span>{this.state.yearContribs}</span>
-                이번달 기여 <span>{this.state.monthContribs}</span>
+                <div className="summary">
+                    <div>총 기여 <span>{this.state.totalContribs}</span></div>
+                    <div>올해 기여 <span>{this.state.yearContribs}</span></div>
+                    <div>이번달 기여 <span>{this.state.monthContribs}</span></div>
+                    <div>최장 연속기여 (일) <span>{this.state.longestStreak}</span></div>
+                    <div>현재 연속기여 (일) <span>{this.state.currentStreak}</span></div>
+                </div>
             </div>
         );
     }
