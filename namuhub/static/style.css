@@ -1,4 +1,5 @@
 @charset "utf-8";
+/* LESS or SASS 쓰려다가 굳이 이 작은 프로젝트에 쓸 필요가 있나 싶어서 쓰지 않았는데 음.. */
 
 #body {
     min-width: 800px;
@@ -36,9 +37,19 @@ body > .ui.container {
     font-size: 0.9em;
 }
 
-#details div.title {
+#detailsTitle {
+}
+
+#detailsTitle .title {
+    line-height: 2.2em;
     text-align: center;
     font-size: 1.2em;
+    padding: .78571429em 0.1em;
+}
+
+#detailsTitle .buttons {
+    display: inline-block;
+    float: right;
 }
 
 #details ul {

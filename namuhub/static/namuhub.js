@@ -135,7 +135,6 @@ var ContribBox = React.createClass({
 
             // re-arrange data
             var data = {};
-            console.log(props.data)
             $.each(props.data, function(date, items) {
                 date = +new Date(date) / 1000 | 0;
                 data[date] = items.length;
@@ -172,6 +171,30 @@ var ContribBox = React.createClass({
         });
     },
 
+    onChangeRange: function(value, text, $selectedItem) {
+        var startDate = moment().add(-parseInt(value), 'd');
+        var detailsDate = startDate.format('YYYY/MM/DD') + '-' + moment().format('YYYY/MM/DD');
+        var items = $.map(this.props.data, function(obj) {return obj}).filter(function(obj) {
+            return obj.when > +startDate;
+        }).sort(function(a, b) {
+            return a.when > b.when ? 1 : -1;
+        }).reverse();
+
+        this.setState({
+            detailsDate: detailsDate,
+            details: items,
+        });
+    },
+
+    componentDidMount: function() {
+        $('.ui.dropdown').dropdown();
+
+        $('.ui.buttons .dropdown.button').dropdown({
+            action: 'combo',
+            onChange: this.onChangeRange,
+        });
+    },
+
     render: function() {
         var contribClassString = 'ui center';
         if(!this.state.loaded) {
@@ -190,8 +213,21 @@ var ContribBox = React.createClass({
                     <div>현재 연속기여 (일) <span>{this.state.currentStreak}</span></div>
                 </div>
                 <div className="ui divider"></div>
+                <div id="detailsTitle" className="clearfix">
+                    <span className="title"><strong>{this.state.details.length}</strong>번의 기여 - {this.state.detailsDate}</span>
+                    <div className="ui buttons">
+                        <button className="ui tiny button">기간</button>
+                        <div className="ui tiny floating dropdown icon button" tabindex="-1">
+                            <i className="dropdown icon"></i>
+                            <div className="menu transition hidden" tabindex="-1">
+                                <div className="item" data-value="7">7일</div>
+                                <div className="item" data-value="30">30일</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="ui divider"></div>
                 <div id="details">
-                    <div className="title"><strong>{this.state.details.length}</strong>번의 기여 - {this.state.detailsDate}</div>
                     <ul>
                         {this.state.details.map(function(detail) {
                             return <ContribBoxItem data={detail} />;
