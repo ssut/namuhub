@@ -27,6 +27,7 @@ def collectstatic(args):
     for fn in next(os.walk('namuhub/static/jsx'))[2]:
         transformer.transform('namuhub/static/jsx/{}'.format(fn),
                               js_path='namuhub/static/js/{}'.format(fn))
+    exit(0)
 
 def main():
     parser = argparse.ArgumentParser(prog='namuhub')
@@ -49,7 +50,7 @@ def main():
     assets_parser = subparsers.add_parser('collectstatic')
     assets_parser.set_defaults(function=collectstatic)
 
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args()
     if not args.command:
         parser.print_help()
         exit(1)
