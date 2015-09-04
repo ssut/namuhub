@@ -1,11 +1,19 @@
 @charset "utf-8";
 
+#body {
+    min-width: 800px;
+}
+
 body > .ui.container {
     margin-top: 3em;
 }
 
 .hide {
     display: none;
+}
+
+.clearfix:after {
+    visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0;
 }
 
 #contrib {
@@ -26,6 +34,11 @@ body > .ui.container {
     text-align: center;
     color: #767676;
     font-size: 0.9em;
+}
+
+#details div.title {
+    text-align: center;
+    font-size: 1.2em;
 }
 
 #contrib div.summary > div > span:last-child {
