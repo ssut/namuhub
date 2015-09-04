@@ -4,13 +4,36 @@ var ContribBox = React.createClass({
     },
 
     componentWillReceiveProps: function(props) {
-        if(props.data !== this.props.data) {
-            // alert('yay! changed!');
+        if(props.data !== null && props.data !== this.props.data) {
+            window.cal = new CalHeatMap();
+            $('#cal').html('');
+            var startDate = new Date();
+            startDate.setDate(startDate.getDate() - 365);
+            var data = {};
+            window.$.each(props.data, function(date, items) {
+                date = +new Date(date) / 1000 | 0;
+                data[date] = items.length;
+            });
+            window.cal.init({
+                itemSelector: '#cal',
+                domain: 'month',
+                subDomain: 'day',
+                range: 12,
+                start: startDate,
+                data: data,
+                tooltip: true,
+                legendHorizontalPosition: 'left',
+                onComplete: function() {
+                    setTimeout(function() {
+                        $('#cal').css('width', $('#cal > svg').width());
+                    }, 0);
+                },
+            });
         }
     },
 
     render: function() {
-        return <div>{this.props.data}</div>;
+        return <div id="cal"></div>;
     }
 });
 
