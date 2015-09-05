@@ -102,20 +102,20 @@ var ContribBox = React.createClass({
             });
             var _lastDay = null, _yesterDay = null;
             var _current = 0, _break = false;
-            $(merged.reverse()).each(function(_, obj) {
+            $(merged.reverse()).each(function(i, obj) {
                 if(_break) return;
                 var date = moment(obj.when);
-                if(_current == 0 && !date.isSame(moment(), 'day')) {
+                if(i == 0 && !date.isSame(moment(), 'day')) {
                     _break = true;
                     return;
-                } else {
+                } else if(i == 0 && date.isSame(moment(), 'day')) {
                     _current = 1;
                 }
                 if(date.isSame(_lastDay, 'day')) return;
 
                 if(date.isSame(_yesterDay, 'day')) {
                     _current++;
-                } else {
+                } else if(_yesterDay != null) {
                     _break = true;
                     return;
                 }
