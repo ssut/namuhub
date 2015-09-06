@@ -36,10 +36,8 @@ def namu():
     for contrib in contribs:
         date = (contrib.when + timedelta(hours=9)).date().strftime('%Y-%m-%d')
         data[date].append(contrib)
-    # Convert defaultdict to dict
-    # However, this may be inefficient but I don't care about performance at this point because it doesn't matter while it's a small project
-    data = dict(data)
     # Next, we should serialize it as dict object to make sure that all the values are JSON serialiable
+    # However, this may be inefficient but I don't care about performance at this point because it doesn't matter while it's a small project
     for key, value in data.items():
         value = [c.as_dict() for c in value]
         # Almost done, fix timezone and convert its date property to unix timestamp number that can be parsed by javascript's date object
