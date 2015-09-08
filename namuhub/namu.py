@@ -24,6 +24,8 @@ class NamuContrib(object):
         self.when = when
         self.desc = desc
         self.revert = revert
+        if revision == 1:
+            self.new = True
 
     @property
     def when(self):
@@ -44,6 +46,7 @@ class NamuContrib(object):
             'when': self.when,
             'desc': self.desc,
             'revert': self.revert,
+            'new': self.new,
         }
         return obj
 
