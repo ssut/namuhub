@@ -89,7 +89,10 @@ def contrib(username):
             except IndexError:
                 revision = 1
             else:
-                revision = int(qs['rev'])
+                try:
+                    revision = int(qs['rev'])
+                except KeyError:
+                    revision = 1
             changes = int(info.select('span')[-1].string)
             when = row.select('td')[2].string.strip()
             item = NamuContrib(document=document, revision=revision, changes=changes, when=when)
