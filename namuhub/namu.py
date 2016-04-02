@@ -24,6 +24,7 @@ class NamuContrib(object):
         self.when = when
         self.desc = desc
         self.revert = revert
+        self.new = False
         if revision == 1:
             self.new = True
 
